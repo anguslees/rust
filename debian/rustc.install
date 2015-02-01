@@ -1,0 +1,8 @@
+debian/tmp/usr/bin/rustc
+debian/tmp/usr/share/man/man1/rustc.1
+debian/tmp/usr/bin/rustdoc
+debian/tmp/usr/share/man/man1/rustdoc.1
+debian/tmp/usr/lib/*/lib*.so
+debian/tmp/usr/lib/*/rustlib/*/lib/lib*.so
+debian/tmp/usr/lib/*/rustlib/*/lib/lib*.rlib
+src/etc/zsh/_rust /usr/share/zsh/vendor-completions/

@@ -1,0 +1,51 @@
+Description: Fix libdir install path
+ Rust "make install" performs the install in two stages:
+  1. prepare.mk installs into a temporary dir prefix and builds a dist
+     tarball.
+  2. the dist tarball is installed onto the local system using an
+     "install.sh" script from the tarball.
+
+ Unfortunately, both stages contain logic to mangle paths to suit a
+ custom --libdir.  (2) assumes the libraries in the dist tarball
+ always end in .../lib, but this is not true if ./configure --libdir
+ was used with an exotic (eg: Debian multiarch) value.  In this case,
+ both install stages perform $libdir_relative mangling and the
+ libraries end up in $prefix/$libdir_relative/$libdir_relative/...
+
+ This patch just forces (1) to always install into $prefix/lib, and
+ any non-default --libdir is only performed during (2).
+
+Author: Angus Lees <gus@debian.org>
+Forwarded: no
+
+--- rustc-1.0.0~alpha.orig/mk/prepare.mk
++++ rustc-1.0.0~alpha/mk/prepare.mk
+@@ -172,7 +172,8 @@ prepare-base-$(1): PREPARE_SOURCE_BIN_DI
+ prepare-base-$(1): PREPARE_SOURCE_LIB_DIR=$$(PREPARE_SOURCE_DIR)/$$(CFG_LIBDIR_RELATIVE)
+ prepare-base-$(1): PREPARE_SOURCE_MAN_DIR=$$(S)/man
+ prepare-base-$(1): PREPARE_DEST_BIN_DIR=$$(PREPARE_DEST_DIR)/bin
+-prepare-base-$(1): PREPARE_DEST_LIB_DIR=$$(PREPARE_DEST_DIR)/$$(CFG_LIBDIR_RELATIVE)
++# NB: this is /lib, not /$$(CFG_LIBDIR_RELATIVE). install.sh moves into --libdir
++prepare-base-$(1): PREPARE_DEST_LIB_DIR=$$(PREPARE_DEST_DIR)/lib
+ prepare-base-$(1): PREPARE_DEST_MAN_DIR=$$(PREPARE_DEST_DIR)/share/man/man1
+ prepare-base-$(1): prepare-everything-$(1)
+
+--- rustc-1.0.0~alpha.orig/src/rust-installer/install-template.sh
++++ rustc-1.0.0~alpha/src/rust-installer/install-template.sh
+@@ -716,7 +716,7 @@ fi
+ # add something to the appropriate environment variable.
+ if [ -z "${CFG_DISABLE_VERIFY}" ]
+ then
+-    export $CFG_LD_PATH_VAR="${CFG_PREFIX}/lib:$CFG_OLD_LD_PATH_VAR"
++    export $CFG_LD_PATH_VAR="${ABS_LIBDIR}:$CFG_OLD_LD_PATH_VAR"
+     "${CFG_PREFIX}/bin/${TEMPLATE_VERIFY_BIN}" --version > /dev/null
+     if [ $? -ne 0 ]
+     then
+@@ -727,7 +727,7 @@ then
+         err "${ERR}"
+     else
+         echo
+-        echo "    Note: please ensure '${CFG_PREFIX}/lib' is added to ${CFG_LD_PATH_VAR}"
++        echo "    Note: please ensure '${ABS_LIBDIR}' is added to ${CFG_LD_PATH_VAR}"
+     fi
+ fi

@@ -1,0 +1,3 @@
+debian/data/rust-lldb usr/bin/
+debian/data/rust-lldb-commands usr/share/rust-lldb/
+src/etc/lldb_rust_formatters.py  usr/share/rust-lldb/

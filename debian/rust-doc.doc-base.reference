@@ -1,0 +1,14 @@
+Document: rust-reference
+Title: The Rust Reference
+Section: Programming/Rust
+Abstract: This document is the primary reference for the Rust
+ programming language.
+
+Format: HTML
+Index: /usr/share/doc/rust-doc/reference.html
+
+Format: PDF
+Files: /usr/share/doc/rust-doc/reference.pdf
+
+Format: EPUB
+Files: /usr/share/doc/rust-doc/reference.epub

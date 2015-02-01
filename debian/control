@@ -1,0 +1,84 @@
+Source: rustc
+Section: devel
+Maintainer: Angus Lees <gus@debian.org>
+Priority: extra
+Build-Depends: debhelper (>= 9), rustc <!dlstage0>, perl, curl | wget, python2.7 | python2.6, clang, valgrind, default-jdk, antlr3, grun, libedit-dev, ca-certificates <dlstage0>
+Build-Depends-Indep: pandoc (>=1.9) <!nodocs>, po4a <!nodocs>, texlive-luatex <!nodocs>, texlive-xetex <!nodocs>, texlive-latex-base <!nodocs>, texlive-generic-recommended <!nodocs>, lmodern <!nodocs>
+Vcs-Git: git://github.com/anguslees/rust-debian.git
+Vcs-Browser: http://github.com/anguslees/rust-debian
+Homepage: http://www.rust-lang.org/
+Standards-Version: 3.9.6
+
+Package: rustc
+Architecture: any
+Multi-Arch: foreign
+Section: devel
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: rust-gdb | rust-lldb, rust-doc
+Suggests: rust-mode, vim-syntax-rust, kate-syntax-rust
+Description: Compiler for the Rust programming language
+ A compiler for the Rust programming language.
+ .
+ Rust is a curly-brace, block-structured expression language.  It
+ visually resembles the C language family, but differs significantly
+ in syntactic and semantic details.  Its design is oriented toward
+ concerns of "programming in the large", that is, of creating and
+ maintaining boundaries - both abstract and operational - that
+ preserve large-system integrity, availability and concurrency.
+ .
+ It supports a mixture of imperative procedural, concurrent actor,
+ object-oriented and pure functional styles.  Rust also supports
+ generic programming and meta-programming, in both static and dynamic
+ styles.
+
+Package: rust-lldb
+Architecture: all
+Section: devel
+Depends: ${misc:Depends}, lldb
+Description: Debugger for the Rust programming language (lldb)
+ This package includes a wrapper script and support files to use the
+ LLVM debugger with Rust binaries.
+
+Package: rust-gdb
+Architecture: all
+Section: devel
+Depends: ${misc:Depends}, gdb
+Description: Debugger for the Rust programming language (gdb)
+ This package includes a wrapper script and support files to use GNU
+ gdb debugger with Rust binaries.
+
+Package: rust-doc
+Architecture: all
+Section: doc
+Build-Profiles: <!nodocs>
+Depends: ${misc:Depends}
+Suggests: doc-base
+Description: Documentation for the Rust programming language
+ This package contains reference and tutorial documentation for the
+ Rust language in HTML and PDF formats.
+
+Package: rust-mode
+Architecture: all
+Depends: emacs24 | emacsen, ${misc:Depends}
+Suggests: rustc
+Description: Rust mode for emacs
+ This package provides a GNU Emacs major mode for editing code in the
+ Rust programming language.
+
+Package: vim-syntax-rust
+Architecture: all
+Depends: vim, ${misc:Depends}
+Recommends: vim-addon-manager
+Suggests: rustc, vim-syntastic
+Description: Vim highlighting syntax files for Rust
+ This package provides syntax files for the Vim editor for editing code
+ in the Rust programming language.
+
+Package: kate-syntax-rust
+Architecture: all
+Depends: kate, ${misc:Depends}
+Suggests: rustc
+Description: Kate highlighting syntax files for Rust
+ This package provides syntax files for the Kate editor for editing
+ code in the Rust programming language.

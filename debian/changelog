@@ -1,0 +1,5 @@
+rustc (1.0.0~alpha-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #689207)
+
+ -- Angus Lees <gus@debian.org>  Fri, 12 Dec 2014 09:47:59 +1100

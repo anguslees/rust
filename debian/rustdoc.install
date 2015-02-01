@@ -1,0 +1,2 @@
+debian/tmp/usr/bin/rustdoc
+debian/tmp/usr/share/man/man1/rustdoc.1
